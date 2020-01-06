@@ -1,0 +1,12 @@
+{
+  "name": "extract-osm-roads",
+  "dependencies": {
+    "JSONStream": "^1.3.5",
+    "d3-geo": "^1.11.9",
+    "event-stream": "^4.0.1",
+    "ngraph.graph": "^19.0.1",
+    "osm-read": "^0.7.0",
+    "querystring": "^0.2.0",
+    "request": "^2.88.0"
+  }
+}
