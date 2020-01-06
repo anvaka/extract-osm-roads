@@ -1,14 +1,15 @@
-
-// First step - find area id of required city;
+/**
+ * Uses https://wiki.openstreetmap.org/wiki/Nominatim API to fetch
+ * area id, and then downloads all nodes/edges inside the are through
+ * https://wiki.openstreetmap.org/wiki/Overpass_turbo
+ */
 var query_overpass = require('./lib/query-op.js');
 var request = require('request');
 
-var searchQuery = process.argv[2] || 'Seattle';
+var searchQuery = process.argv[2];
 
 if (!searchQuery) {
-  console.error('Please pass area id as the first argument to this script');
-  console.error('To find required area id, run:');
-  console.error('  node 2.download-roads.js 3600197198 > data/3600197198.json');
+  console.error('Please pass the search query for the area');
   process.exit(1);
 }
 
@@ -34,13 +35,14 @@ let highwayTags = [
   'road'
 ].join('|');
 
-let roadFilter = `["highway"~"${highwayTags}"]`;
 if (searchQuery[0] !== '"') searchQuery = `"${searchQuery}"`;
 
-console.error('Searching for area ', searchQuery);
+// First step - find area id of required city;
+console.warn('Searching for area ', searchQuery);
 fetchAreaIdForQuery(searchQuery).then(runOSM).catch(e => console.log(e));
 
 function runOSM(area) {
+  let roadFilter = `["highway"~"${highwayTags}"]`;
   let query = `
 area(${area});
 (._; )->.area;
